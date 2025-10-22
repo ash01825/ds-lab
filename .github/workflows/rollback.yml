@@ -1,0 +1,32 @@
+# opsflow-test-repo/.github/workflows/rollback.yml
+
+name: 'Manual Rollback Trigger'
+
+# THIS IS THE KEY PART
+# This trigger allows the workflow to be run via the API
+on:
+  workflow_dispatch:
+    # You can optionally define inputs that your Lambda can send
+    inputs:
+      incident_id:
+        description: 'The incident ID from OpsFlow'
+        required: false
+        default: 'none'
+      committer:
+        description: 'User who triggered the rollback'
+        required: false
+        default: 'OpsFlow-Agent'
+
+jobs:
+  # This is the job that will run
+  run-rollback-simulation:
+    runs-on: ubuntu-latest
+
+    steps:
+      # A simple echo command is all we need to prove it worked
+      - name: 'Simulate Rollback'
+        run: |
+          echo "✅ Rollback workflow successfully triggered!"
+          echo "This would be where the real rollback script runs."
+          echo "Triggered by: ${{ github.event.inputs.committer }}"
+          echo "For Incident: ${{ github.event.inputs.incident_id }}"
